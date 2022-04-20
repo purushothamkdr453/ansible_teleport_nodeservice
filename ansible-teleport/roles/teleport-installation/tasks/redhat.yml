@@ -1,0 +1,31 @@
+- name: Adding teleport repository
+  get_url:
+    url: https://rpm.releases.teleport.dev/teleport.repo
+    dest: /etc/yum.repos.d/teleport.repo
+
+- name: checking teleport yum repo exists or not
+  stat:
+    path: "/etc/yum.repos.d/teleport.repo"
+  register: yumrepoaddcheck
+
+- name: Gather the package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: installing teleport
+  yum:
+    name: teleport-9.0.2-1.x86_64
+    state: present 
+  when: yumrepoaddcheck.stat.exists and 'teleport' not in ansible_facts.packages
+
+- name: copying agent config
+  template:
+     src: teleport-agentconfig.j2
+     dest: /etc/teleport.yaml
+  notify:
+    - Restart teleport
+
+- name: ensure teleport service is running
+  service:
+      name: teleport 
+      state: started 

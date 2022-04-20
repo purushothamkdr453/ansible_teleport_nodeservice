@@ -1,0 +1,21 @@
+version: v2
+teleport:
+  nodename: {{ ansible_hostname }}
+  data_dir: /var/lib/teleport
+  log:
+    output: stderr
+    severity: INFO
+    format:
+      output: text
+  ca_pin: "{{capin}}"
+  auth_token: {{authtoken}} 
+  auth_servers: {{authservers|to_json}}
+ssh_service:
+  enabled: "yes"
+  labels:
+    platform: {{hostvars[inventory_hostname]['platform']}}
+    env: {{hostvars[inventory_hostname]['env']}}
+auth_service:
+  enabled: false
+proxy_service:
+  enabled: false

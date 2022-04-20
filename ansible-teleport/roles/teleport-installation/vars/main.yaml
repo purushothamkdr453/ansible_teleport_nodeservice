@@ -1,0 +1,4 @@
+---
+authservers: [ "teleport.devopsbypr.in:443" ]
+capin: capin123
+authtoken: authtoken123
