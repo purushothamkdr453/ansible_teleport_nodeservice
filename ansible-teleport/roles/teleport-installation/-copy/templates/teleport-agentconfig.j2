@@ -1,6 +1,6 @@
 version: v2
 teleport:
-  nodename: {{ ansible_hostname }} 
+  nodename: {{ ansible_hostname }}
   data_dir: /var/lib/teleport
   log:
     output: stderr
@@ -9,7 +9,7 @@ teleport:
       output: text
   ca_pin: "{{capin}}"
   auth_token: {{authtoken}} 
-  auth_servers: {{authservers}}
+  auth_servers: {{authservers|to_json}}
 ssh_service:
   enabled: "yes"
   labels:
